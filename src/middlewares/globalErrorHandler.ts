@@ -1,26 +1,26 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
 
-import { Request, Response, NextFunction } from 'express';
+import { ErrorRequestHandler } from 'express';
+import { ZodError } from 'zod';
 
-export const globalErrorHandler = (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction,
+export const globalErrorHandler: ErrorRequestHandler = (
+  err,
+  req,
+  res,
+  next,
 ) => {
+  //setting default values
   const statusCode = 500;
-  const defaultMessage = 'Something went wrong';
+  const message = 'Something went wrong!';
 
-  let errorMessage = defaultMessage;
-  if (error && error?.errors && Array.isArray(error?.errors)) {
-    errorMessage = error?.errors.map((err: any) => err.message);
+  if (err instanceof ZodError) {
   }
 
+  // ultimate return
   return res.status(statusCode).json({
     success: false,
-    message: errorMessage,
-    error: error?.errors,
+    message: message,
+    error: err,
   });
 };
