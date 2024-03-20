@@ -3,4 +3,5 @@ export interface IUser {
   email: string;
   phoneNumber: string;
   avatar: string;
+  role: 'admin' | 'user';
 }
