@@ -15,8 +15,16 @@ const registerUserFromDB = async (userData: IUser) => {
   return result;
 };
 
-const LoginUserFromDB = async (userData: Partial<IUser>) => {
-  console.log(userData);
+const LoginUserFromDB = async (userCredentials: Partial<IUser>) => {
+  // Check if a user with the provided email exists
+  const userExists = await User.isUserExists(userCredentials.email as string);
+
+  console.log(userExists);
+
+  if (!userExists) {
+    // If user does not exist, throw an AppError with status code 401 (Unauthorized)
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid Email!');
+  }
 };
 
 export const UserServices = {

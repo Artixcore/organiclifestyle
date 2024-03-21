@@ -3,6 +3,7 @@ import { IUser, UserModel } from '../interfaces/user.interface';
 import bcrypt from 'bcrypt';
 import config from '../config';
 
+// Define the schema for the User model
 const userSchema = new Schema<IUser, UserModel>(
   {
     fullName: {
@@ -31,12 +32,12 @@ const userSchema = new Schema<IUser, UserModel>(
       default: 'user',
     },
   },
-  { timestamps: true },
+  { timestamps: true }, // Adds createdAt and updatedAt timestamps
 );
 
-// pre save middleware
+// Middleware: Pre-save hook to hash the password before saving
 userSchema.pre('save', async function (next) {
-  // hasing the password and save into db
+  // Hash the password using bcrypt before saving
   this.password = await bcrypt.hash(
     this.password,
     Number(config.bcryptSaltRounds),
@@ -44,18 +45,23 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// deleting password field
+// Method to remove sensitive fields before returning user object as JSON
 userSchema.methods.toJSON = function () {
   const userObject = this.toObject();
 
+  // Remove password and role fields from the user object
   delete userObject.password;
+  delete userObject.role;
+
   return userObject;
 };
 
-// creating a custom static method
-userSchema.statics.isUserExists = async function (email: number) {
+// Static method to check if a user with the given email exists
+userSchema.statics.isUserExists = async function (email: string) {
+  // Find a user with the given email
   const existingUser = await User.findOne({ email });
   return existingUser;
 };
 
+// Create the User model using the schema
 export const User = model<IUser, UserModel>('User', userSchema);
