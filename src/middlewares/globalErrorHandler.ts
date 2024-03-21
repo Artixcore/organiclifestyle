@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
 import { IErrorSources } from '../interfaces/error';
 import handleZodError from '../errors/handleZodError';
 import config from '../config';
+import httpStatus from 'http-status';
 
 export const globalErrorHandler: ErrorRequestHandler = (
   err,
@@ -14,12 +15,12 @@ export const globalErrorHandler: ErrorRequestHandler = (
   next,
 ) => {
   //setting default values
-  let statusCode = 500;
-  let message = 'Something went wrong!';
+  let statusCode = err.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
+  let message = err?.message || httpStatus['500_MESSAGE'];
   let errorSources: IErrorSources[] = [
     {
       path: '',
-      message: 'Something went wrong',
+      message: 'Something went wrong!',
     },
   ];
 
@@ -35,6 +36,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
     success: false,
     message,
     errorSources,
+    err: config.nodeEnv === 'development' ? err : null,
     stack: config.nodeEnv === 'development' ? err?.stack : null,
   });
 };
