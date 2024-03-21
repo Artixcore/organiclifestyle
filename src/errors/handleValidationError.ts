@@ -15,7 +15,7 @@ const handleValidationError = (
   );
 
   return {
-    statusCode: httpStatus.NOT_ACCEPTABLE,
+    statusCode: httpStatus.BAD_REQUEST,
     message: 'Validation Error',
     errorSources,
   };

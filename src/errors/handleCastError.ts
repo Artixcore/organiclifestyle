@@ -14,7 +14,7 @@ const handleCastError = (
 
   return {
     statusCode: httpStatus.BAD_REQUEST,
-    message: 'Invalid Email',
+    message: httpStatus['400_MESSAGE'],
     errorSources,
   };
 };

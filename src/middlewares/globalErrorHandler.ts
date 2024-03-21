@@ -15,8 +15,8 @@ import httpStatus from 'http-status';
 // Error handler middleware for handling global errors
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   // Setting default values for the response
-  let statusCode: number = httpStatus.INTERNAL_SERVER_ERROR;
-  let message: string = httpStatus['500_MESSAGE'];
+  let statusCode = err?.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
+  let message = err?.message || httpStatus['500_MESSAGE'];
   let errorSources: IErrorSources[] = [
     {
       path: '',
@@ -27,54 +27,54 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   // Handling Zod validation errors
   if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
-    statusCode = simplifiedError?.statusCode || httpStatus.BAD_REQUEST;
-    message = simplifiedError?.message || httpStatus['400_MESSAGE'];
-    errorSources = simplifiedError?.errorSources || [];
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
   }
 
   // Handling mongoose validation errors
   else if (err?.name === 'ValidationError') {
     const simplifiedError = handleValidationError(err);
-    statusCode = simplifiedError?.statusCode || httpStatus.BAD_REQUEST;
-    message = simplifiedError?.message || httpStatus['400_MESSAGE'];
-    errorSources = simplifiedError?.errorSources || [];
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
   }
 
   // Handling duplicate errors
   else if (err?.code === 11000) {
     const simplifiedError = handleDuplicateError(err);
-    statusCode = simplifiedError?.statusCode || httpStatus.CONFLICT;
-    message = simplifiedError?.message || httpStatus['409_MESSAGE'];
-    errorSources = simplifiedError?.errorSources || [];
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
   }
 
   // Handling Cast errors (e.g., MongoDB CastError)
   else if (err?.name === 'CastError') {
     const simplifiedError = handleCastError(err);
-    statusCode = simplifiedError?.statusCode || httpStatus.BAD_REQUEST;
-    message = simplifiedError?.message || httpStatus['400_MESSAGE'];
-    errorSources = simplifiedError?.errorSources || [];
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
   }
 
   // Handling AppErrors (custom error class)
   else if (err instanceof AppError) {
-    statusCode = err?.statusCode || httpStatus.INTERNAL_SERVER_ERROR;
-    message = err.message || httpStatus['500_MESSAGE'];
+    statusCode = err?.statusCode;
+    message = err.message;
     errorSources = [
       {
         path: '',
-        message: err?.message || httpStatus['500_MESSAGE'],
+        message: err?.message,
       },
     ];
   }
 
   // Handling general errors (instances of Error)
   else if (err instanceof Error) {
-    message = err.message || httpStatus['500_MESSAGE'];
+    message = err.message;
     errorSources = [
       {
         path: '',
-        message: err?.message || httpStatus['500_MESSAGE'],
+        message: err?.message,
       },
     ];
   }
