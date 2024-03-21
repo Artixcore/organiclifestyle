@@ -16,6 +16,10 @@ export const userValidationSchema = z.object({
       required_error: 'Phone number is required.',
       invalid_type_error: 'Phone number must be a string.',
     }),
+    password: z.string({
+      required_error: 'Password is required.',
+      invalid_type_error: 'Password must be a string.',
+    }),
     avatar: z.string({
       required_error: 'Avatar URL is required.',
       invalid_type_error: 'Avatar URL must be a string.',
