@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+
+import { Model } from 'mongoose';
+
 export interface IUser {
   fullName: string;
   email: string;
@@ -5,4 +9,9 @@ export interface IUser {
   password: string;
   avatar: string;
   role: 'admin' | 'user';
+}
+
+// for creating a static
+export interface UserModel extends Model<IUser> {
+  isUserExists(email: string): Promise<IUser | null>;
 }

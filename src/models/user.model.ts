@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from '../interfaces/user.interface';
+import { IUser, UserModel } from '../interfaces/user.interface';
 import bcrypt from 'bcrypt';
 import config from '../config';
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, UserModel>(
   {
     fullName: {
       type: String,
@@ -52,4 +52,10 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
-export const User = model<IUser>('User', userSchema);
+// creating a custom static method
+userSchema.statics.isUserExists = async function (email: number) {
+  const existingUser = await User.findOne({ email });
+  return existingUser;
+};
+
+export const User = model<IUser, UserModel>('User', userSchema);

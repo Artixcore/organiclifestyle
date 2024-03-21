@@ -1,15 +1,19 @@
 import { Router } from 'express';
 import { userControllers } from '../controllers/user.controller';
 import validateRequest from '../middlewares/validateRequest';
-import { userValidationSchema } from '../validations/user.validation';
+import { UserValidations } from '../validations/user.validation';
 
 const router = Router();
 
 router.post(
   '/register',
-  validateRequest(userValidationSchema),
+  validateRequest(UserValidations.registerSchema),
   userControllers.registerUser,
 );
-router.post('/login', userControllers.loginUser);
+router.post(
+  '/login',
+  validateRequest(UserValidations.loginSchema),
+  userControllers.loginUser,
+);
 
 export const UserRoutes = router;
