@@ -17,7 +17,12 @@ const registerUser = catchAsync(async (req, res) => {
 const loginUser = catchAsync(async (req, res) => {
   const result = await UserServices.LoginUserFromDB(req.body);
 
-  console.log(result);
+  return sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'login successful!',
+    data: result,
+  });
 });
 
 export const userControllers = {

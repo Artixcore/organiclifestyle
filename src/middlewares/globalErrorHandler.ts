@@ -3,12 +3,12 @@
 
 import { ErrorRequestHandler } from 'express';
 import { ZodError } from 'zod';
-import { IErrorSources } from '../interfaces/error';
+import { IErrorSources } from '../interfaces/error.interface';
 import handleZodError from '../errors/handleZodError';
 import handleValidationError from '../errors/handleValidationError';
 import handleCastError from '../errors/handleCastError';
 import handleDuplicateError from '../errors/handleDuplicateError';
-import AppError from '../errors/AppError';
+import ApiError from '../errors/ApiError';
 import config from '../config';
 import httpStatus from 'http-status';
 
@@ -20,7 +20,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let errorSources: IErrorSources[] = [
     {
       path: '',
-      message: httpStatus['500_MESSAGE'],
+      message: err?.message || httpStatus['500_MESSAGE'],
     },
   ];
 
@@ -56,8 +56,8 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     errorSources = simplifiedError?.errorSources;
   }
 
-  // Handling AppErrors (custom error class)
-  else if (err instanceof AppError) {
+  // Handling ApiErrors (custom error class)
+  else if (err instanceof ApiError) {
     statusCode = err?.statusCode;
     message = err.message;
     errorSources = [

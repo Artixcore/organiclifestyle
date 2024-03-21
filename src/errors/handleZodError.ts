@@ -1,5 +1,8 @@
 import { ZodError, ZodIssue } from 'zod';
-import { IErrorSources, IGenericErrorResponse } from '../interfaces/error';
+import {
+  IErrorSources,
+  IGenericErrorResponse,
+} from '../interfaces/error.interface';
 import httpStatus from 'http-status';
 
 const handleZodError = (err: ZodError): IGenericErrorResponse => {

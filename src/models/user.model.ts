@@ -57,7 +57,7 @@ userSchema.methods.toJSON = function () {
 };
 
 // Static method to check if a user with the given email exists
-userSchema.statics.isUserExists = async function (email: string) {
+userSchema.statics.isUserExistsByEmail = async function (email: string) {
   // Find a user with the given email
   const existingUser = await User.findOne({ email });
   return existingUser;

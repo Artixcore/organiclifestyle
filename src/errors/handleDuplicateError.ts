@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { IErrorSources, IGenericErrorResponse } from '../interfaces/error';
+import {
+  IErrorSources,
+  IGenericErrorResponse,
+} from '../interfaces/error.interface';
 import httpStatus from 'http-status';
 
 const handleDuplicateError = (err: any): IGenericErrorResponse => {
