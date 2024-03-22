@@ -3,6 +3,8 @@ import cors from 'cors';
 import router from './routes';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import notFound from './middlewares/notFound';
+import validateAuth from './middlewares/validateAuth';
+import { USER_ROLE } from './constants/user.constant';
 
 const app = express();
 
@@ -14,7 +16,8 @@ app.use(cors());
 app.use('/api/v1', router);
 
 // default route
-app.get('/', (req: Request, res: Response) => {
+app.get('/', validateAuth(USER_ROLE.admin), (req: Request, res: Response) => {
+  console.log(req.user);
   res.send('Hello World!');
 });
 

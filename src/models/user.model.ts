@@ -22,6 +22,7 @@ const userSchema = new Schema<IUser, UserModel>(
     password: {
       type: String,
       required: true,
+      select: 0,
     },
     avatar: {
       type: String,
@@ -59,7 +60,7 @@ userSchema.methods.toJSON = function () {
 // Static method to check if a user with the given email exists
 userSchema.statics.isUserExistsByEmail = async function (email: string) {
   // Find a user with the given email
-  const existingUser = await User.findOne({ email });
+  const existingUser = await User.findOne({ email }).select('+password');
   return existingUser;
 };
 

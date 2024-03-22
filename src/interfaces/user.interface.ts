@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { Model } from 'mongoose';
+import { USER_ROLE } from '../constants/user.constant';
 
 export interface IUser {
   fullName: string;
@@ -10,6 +11,8 @@ export interface IUser {
   avatar: string;
   role: 'admin' | 'user';
 }
+
+export type TUserRole = keyof typeof USER_ROLE;
 
 // for creating a static
 export interface UserModel extends Model<IUser> {
