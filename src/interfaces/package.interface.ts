@@ -3,5 +3,5 @@ export interface IPackage {
   packageDetails: string;
   price: number;
   discount: number;
-  packageNumber: number;
+  isDeleted: boolean;
 }

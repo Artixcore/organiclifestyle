@@ -20,13 +20,12 @@ const packageSchema = new Schema<IPackage>(
       type: Number,
       default: null,
     },
-    packageNumber: {
-      type: Number,
-      required: true,
-      unique: true,
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },
 );
 
-export const User = model<IPackage>('Package', packageSchema);
+export const Package = model<IPackage>('Package', packageSchema);
