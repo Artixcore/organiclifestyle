@@ -7,9 +7,10 @@ const packageSchema = new Schema<IPackage>(
     packageName: {
       type: String,
       required: true,
+      unique: true,
     },
     packageDetails: {
-      type: String,
+      type: [String],
       required: true,
     },
     price: {

@@ -16,13 +16,13 @@ const handleDuplicateError = (err: any): IGenericErrorResponse => {
   const errorSources: IErrorSources[] = [
     {
       path: '',
-      message: `${extractedMessage} is already exists`,
+      message: `'${extractedMessage}' is already exists`,
     },
   ];
 
   return {
     statusCode: httpStatus.CONFLICT,
-    message: httpStatus['409_MESSAGE'],
+    message: `Request conflict: '${extractedMessage}' is already in use.`,
     errorSources,
   };
 };

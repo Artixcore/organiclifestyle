@@ -17,7 +17,6 @@ app.use('/api/v1', router);
 
 // default route
 app.get('/', validateAuth(USER_ROLE.admin), (req: Request, res: Response) => {
-  console.log(req.user);
   res.send('Hello World!');
 });
 
