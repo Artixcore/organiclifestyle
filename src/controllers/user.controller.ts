@@ -25,7 +25,7 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
-export const userControllers = {
+export const UserControllers = {
   registerUser,
   loginUser,
 };
