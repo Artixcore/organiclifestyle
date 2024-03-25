@@ -3,6 +3,7 @@ import catchAsync from '../utils/catchAsync';
 import axios from 'axios';
 import sendResponse from '../utils/sendResponse';
 import httpStatus from 'http-status';
+import { ICryptoListing } from '../types';
 
 // Controller to fetch the top 20 cryptocurrencies with positive 24h change
 const fetchTopPerformingCryptos = catchAsync(async (req, res) => {
@@ -18,12 +19,12 @@ const fetchTopPerformingCryptos = catchAsync(async (req, res) => {
 
   // Filter cryptocurrencies with positive 24h change
   const positiveData = response?.data?.data.filter(
-    (item) => item?.quote?.USD?.percent_change_24h > 0,
+    (item: ICryptoListing) => item?.quote?.USD?.percent_change_24h > 0,
   );
 
   // Sort filtered data by 24h change in descending order
   const sortedData = positiveData.sort(
-    (a, b) =>
+    (a: ICryptoListing, b: ICryptoListing) =>
       b?.quote?.USD?.percent_change_24h - a?.quote?.USD?.percent_change_24h,
   );
 
@@ -71,12 +72,12 @@ const fetchLatestPositiveCryptos = catchAsync(async (req, res) => {
 
   // Filter cryptocurrencies with positive 24h change
   const positiveData = response?.data?.data.filter(
-    (item) => item?.quote?.USD?.percent_change_24h > 0,
+    (item: ICryptoListing) => item?.quote?.USD?.percent_change_24h > 0,
   );
 
   // Sort filtered data by 24h change in descending order
   const sortedData = positiveData.sort(
-    (a, b) =>
+    (a: ICryptoListing, b: ICryptoListing) =>
       b?.quote?.USD?.percent_change_24h - a?.quote?.USD?.percent_change_24h,
   );
 
