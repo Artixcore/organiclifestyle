@@ -4,6 +4,19 @@ import { IPackage } from '../interfaces/package.interface';
 import { Package } from '../models/package.model';
 
 const createPackageFromDB = async (packageData: IPackage) => {
+  const packagesLimit = 3;
+
+  const existingPackagesCount = await Package.countDocuments({
+    isDeleted: false,
+  });
+
+  if (existingPackagesCount >= packagesLimit) {
+    throw new ApiError(
+      httpStatus.TOO_MANY_REQUESTS,
+      'Maximum package creation limit reached!',
+    );
+  }
+
   const result = Package.create(packageData);
   return result;
 };

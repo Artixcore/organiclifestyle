@@ -29,4 +29,12 @@ const packageSchema = new Schema<IPackage>(
   { timestamps: true },
 );
 
+// deleting isDeleted field
+packageSchema.methods.toJSON = function () {
+  const packageObj = this.toObject();
+
+  delete packageObj.isDeleted;
+  return packageObj;
+};
+
 export const Package = model<IPackage>('Package', packageSchema);
